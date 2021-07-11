@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+issueTrackerURL="https://github.com/MC-U-Team/Lumpi-Mod/issues"
+displayURL="https://u-team.info/mods/lumpimod"
+logoFile="logo.png"
+license="ARR"
+credits="Team U-Team"
+authors="HyCraftHD"
+
+[[mods]]
+	modId="lumpimod"
+	version="${file.jarVersion}"
+	displayName="Lumpi Mod"
+	updateJSONURL="https://api.u-team.info/update/lumpimod.json"
+	description="Lumpi Mod"
+	
+	[[dependencies.lumpimod]]
+	    modId="forge"
+	    mandatory=true
+	    versionRange="[36.1.30,)"
+	    ordering="NONE"
+	    side="BOTH"
+	
+	[[dependencies.lumpimod]]
+	    modId="minecraft"
+	    mandatory=true
+	    versionRange="[1.16.5]"
+	    ordering="NONE"
+	    side="BOTH"
+	    
+	[[dependencies.lumpimod]]
+	    modId="uteamcore"
+	    mandatory=true
+	    versionRange="[3.2.1.196,)"
+	    ordering="NONE"
+	    side="BOTH"
