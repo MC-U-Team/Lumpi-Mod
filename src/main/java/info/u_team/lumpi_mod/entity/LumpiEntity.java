@@ -1,36 +1,32 @@
 package info.u_team.lumpi_mod.entity;
 
-import java.util.UUID;
-
-import info.u_team.lumpi_mod.init.LumpiModEntities;
-import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class LumpiEntity extends TameableEntity {
+public class LumpiEntity extends WolfEntity {
 	
-	public LumpiEntity(EntityType<? extends TameableEntity> type, World worldIn) {
+	public LumpiEntity(EntityType<? extends LumpiEntity> type, World worldIn) {
 		super(type, worldIn);
+		setCustomName(new StringTextComponent("Lumpi"));
+		setCustomNameVisible(true);
 	}
 	
-	@Override
-	public AgeableEntity createChild(ServerWorld world, AgeableEntity mate) {
-		final LumpiEntity lumpi = LumpiModEntities.LUMPI.get().create(world);
-		final UUID uuid = getOwnerId();
-		if (uuid != null) {
-			lumpi.setOwnerId(uuid);
-			lumpi.setTamed(true);
-		}
-		return lumpi;
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_() //
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3) //
+				.createMutableAttribute(Attributes.MAX_HEALTH, 8) //
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 2);
 	}
 	
 	@Override
 	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
-	
 }
