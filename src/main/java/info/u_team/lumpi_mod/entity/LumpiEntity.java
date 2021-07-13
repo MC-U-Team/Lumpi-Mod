@@ -20,9 +20,23 @@ public class LumpiEntity extends WolfEntity {
 	
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_() //
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3) //
-				.createMutableAttribute(Attributes.MAX_HEALTH, 8) //
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 2);
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.4) //
+				.createMutableAttribute(Attributes.MAX_HEALTH, 12) //
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6);
+	}
+	
+	@Override
+	public void setTamed(boolean tamed) {
+		super.setTamed(tamed);
+		
+		if (tamed) {
+			getAttribute(Attributes.MAX_HEALTH).setBaseValue(25);
+			setHealth(25);
+		} else {
+			getAttribute(Attributes.MAX_HEALTH).setBaseValue(12);
+		}
+		
+		getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6);
 	}
 	
 	@Override
