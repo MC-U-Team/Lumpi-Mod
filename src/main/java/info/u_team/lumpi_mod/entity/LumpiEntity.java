@@ -30,7 +30,6 @@ import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.LlamaSpitEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
@@ -80,21 +79,21 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
 	
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		final LlamaSpitEntity llamaspitentity = new LlamaSpitEntity(EntityType.LLAMA_SPIT, world);
-		llamaspitentity.setShooter(this);
-		llamaspitentity.setPosition(getPosX() - (getWidth() + 1.0F) * 0.5D * MathHelper.sin(renderYawOffset * ((float) Math.PI / 180F)), getPosYEye() - 0.1F, getPosZ() + (getWidth() + 1.0F) * 0.5D * MathHelper.cos(renderYawOffset * ((float) Math.PI / 180F)));
+		final LumpiSpitEntity spit = new LumpiSpitEntity(world, this);
 		
-		final double d0 = target.getPosX() - getPosX();
-		final double d1 = target.getPosYHeight(0.3333333333333333D) - llamaspitentity.getPosY();
-		final double d2 = target.getPosZ() - getPosZ();
-		final float f = MathHelper.sqrt(d0 * d0 + d2 * d2) * 0.2F;
-		llamaspitentity.shoot(d0, d1 + f, d2, 1.5F, 10.0F);
+		final double x = target.getPosX() - getPosX();
+		final double y = target.getPosYHeight(0.3333333333333333) - spit.getPosY();
+		final double z = target.getPosZ() - getPosZ();
+		
+		final float addedY = MathHelper.sqrt(x * x + z * z) * 0.2F;
+		spit.shoot(x, y + addedY, z, 1, 10);
+		
 		if (!isSilent()) {
-			world.playSound((PlayerEntity) null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_LLAMA_SPIT, getSoundCategory(), 1.0F, 1.0F + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
+			world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_LLAMA_SPIT, getSoundCategory(), 1, 1 + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
 		}
+		world.addEntity(spit);
 		
-		world.addEntity(llamaspitentity);
-		
+		// Randomly stop spitting after some spits
 		stopSpitting = rand.nextInt(2) == 0;
 	}
 	
