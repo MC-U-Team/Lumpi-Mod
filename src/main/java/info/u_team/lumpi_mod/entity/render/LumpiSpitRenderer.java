@@ -33,6 +33,8 @@ public class LumpiSpitRenderer extends EntityRenderer<LumpiSpitEntity> {
 		matrixStack.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw) - 90));
 		matrixStack.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch)));
 		
+		matrixStack.scale(5.5F, 1.5F, 1.5F);
+		
 		model.setRotationAngles(entity, partialTicks, 0, -0.1F, 0, 0);
 		model.render(matrixStack, buffer.getBuffer(model.getRenderType(getEntityTexture(entity))), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 0, 1);
 		
