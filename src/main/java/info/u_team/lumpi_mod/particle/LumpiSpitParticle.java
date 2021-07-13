@@ -16,6 +16,7 @@ public class LumpiSpitParticle extends PoofParticle {
 		particleGravity = 0.6F;
 		particleRed = 1;
 		particleGreen = 1;
+		particleBlue *= 10;
 	}
 	
 	@Override
