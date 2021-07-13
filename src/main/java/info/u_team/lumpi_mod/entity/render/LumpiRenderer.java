@@ -27,9 +27,6 @@ public class LumpiRenderer extends MobRenderer<LumpiEntity, LumpiModel> {
 	
 	@Override
 	public void render(LumpiEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLight) {
-		entityModel = new LumpiModel();
-		
-		
 		if (entity.isWolfWet()) {
 			final float shading = entity.getShadingWhileWet(partialTicks);
 			entityModel.setTint(shading, shading, shading);
