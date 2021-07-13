@@ -11,15 +11,19 @@ public class LumpiModel extends TintedAgeableModel<LumpiEntity> {
 	
 	private final ModelRenderer head;
 	
+	private final ModelRenderer leftEar;
+	private final ModelRenderer rightEar;
+	private final ModelRenderer nose;
+	
 	private final ModelRenderer body;
+	
 	private final ModelRenderer backLeftLeg;
 	private final ModelRenderer backRightLeg;
 	private final ModelRenderer frontLeftLeg;
 	private final ModelRenderer frontRightLeg;
 	
-	private final ModelRenderer leftEar;
-	private final ModelRenderer rightEar;
-	private final ModelRenderer nose;
+	private final ModelRenderer tail;
+	private final ModelRenderer tailChild;
 	
 	public LumpiModel() {
 		textureWidth = 128;
@@ -29,6 +33,21 @@ public class LumpiModel extends TintedAgeableModel<LumpiEntity> {
 		head.addBox(-3, -3, -2, 4, 4, 4);
 		head.setRotationPoint(0, 13.5F, -7);
 		head.setTextureSize(textureWidth, textureHeight);
+		
+		leftEar = new ModelRenderer(this, 16, 14);
+		leftEar.addBox(-3, -2, -1.5F, 1, 3, 3);
+		leftEar.setRotationPoint(-1, 12.5F, -7);
+		leftEar.setTextureSize(textureWidth, textureHeight);
+		
+		rightEar = new ModelRenderer(this, 16, 14);
+		rightEar.addBox(2, -2, -1.5F, 1, 3, 3);
+		rightEar.setRotationPoint(-1, 12.5F, -7);
+		rightEar.setTextureSize(textureWidth, textureHeight);
+		
+		nose = new ModelRenderer(this, 0, 8);
+		nose.addBox(-2, 0, -4, 2, 2, 2);
+		nose.setRotationPoint(0, 12.5F, -7);
+		nose.setTextureSize(textureWidth, textureHeight);
 		
 		body = new ModelRenderer(this, 21, 17);
 		body.addBox(-3, -7, -1.5F, 6, 14, 3);
@@ -70,20 +89,12 @@ public class LumpiModel extends TintedAgeableModel<LumpiEntity> {
 		frontRightLeg.setRotationPoint(0.5F, 16, -2.5F);
 		frontRightLeg.setTextureSize(textureWidth, textureHeight);
 		
-		leftEar = new ModelRenderer(this, 16, 14);
-		leftEar.addBox(-3, -2, -1.5F, 1, 3, 3);
-		leftEar.setRotationPoint(-1, 12.5F, -7);
-		leftEar.setTextureSize(textureWidth, textureHeight);
+		tail = new ModelRenderer(this, 9, 18);
+		tail.setRotationPoint(-1, 12, 8);
 		
-		rightEar = new ModelRenderer(this, 16, 14);
-		rightEar.addBox(2, -2, -1.5F, 1, 3, 3);
-		rightEar.setRotationPoint(-1, 12.5F, -7);
-		rightEar.setTextureSize(textureWidth, textureHeight);
-		
-		nose = new ModelRenderer(this, 0, 8);
-		nose.addBox(-2, 0, -4, 2, 2, 2);
-		nose.setRotationPoint(0, 12.5F, -7);
-		nose.setTextureSize(textureWidth, textureHeight);
+		tailChild = new ModelRenderer(this, 9, 18);
+		tailChild.addBox(-1, -1, -1, 2, 7, 2, -0.2F);
+		tail.addChild(tailChild);
 	}
 	
 	@Override
@@ -93,7 +104,7 @@ public class LumpiModel extends TintedAgeableModel<LumpiEntity> {
 	
 	@Override
 	protected Iterable<ModelRenderer> getBodyParts() {
-		return ImmutableList.of(body, backLeftLeg, backRightLeg, frontLeftLeg, frontRightLeg, leftEar, rightEar, nose);
+		return ImmutableList.of(body, leftEar, rightEar, nose, backLeftLeg, backRightLeg, frontLeftLeg, frontRightLeg, tail);
 	}
 	
 	@Override
@@ -109,13 +120,23 @@ public class LumpiModel extends TintedAgeableModel<LumpiEntity> {
 		
 		nose.rotateAngleX = head.rotateAngleX;
 		nose.rotateAngleY = head.rotateAngleY;
+		
+		tail.rotateAngleX = ageInTicks;
 	}
 	
 	@Override
 	public void setLivingAnimations(LumpiEntity entity, float limbSwing, float limbSwingAmount, float partialTick) {
+		if (entity.isAngry()) {
+			tail.rotateAngleY = 0.0F;
+		} else {
+			tail.rotateAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		}
+		
 		if (entity.isEntitySleeping()) {
 			body.setRotationPoint(-1, 18, 0);
 			body.rotateAngleX = 0.7853982F;
+			
+			tail.setRotationPoint(-1, 21, 6);
 			
 			backLeftLeg.setRotationPoint(-2.5F, 22, 2);
 			backLeftLeg.rotateAngleX = 4.712389F;
@@ -131,6 +152,8 @@ public class LumpiModel extends TintedAgeableModel<LumpiEntity> {
 		} else {
 			body.setRotationPoint(-1, 14, 2);
 			body.rotateAngleX = 1.5707964F;
+			
+			tail.setRotationPoint(-1, 12, 8);
 			
 			backLeftLeg.setRotationPoint(-2.5F, 16, 7);
 			backLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -152,6 +175,7 @@ public class LumpiModel extends TintedAgeableModel<LumpiEntity> {
 		nose.rotateAngleZ = head.rotateAngleZ;
 		
 		body.rotateAngleZ = entity.getShakeAngle(partialTick, -0.16F);
+		tailChild.rotateAngleZ = entity.getShakeAngle(partialTick, -0.2F);
 	}
 	
 }
