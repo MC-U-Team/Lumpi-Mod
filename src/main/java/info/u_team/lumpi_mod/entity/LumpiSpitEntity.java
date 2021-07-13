@@ -70,7 +70,7 @@ public class LumpiSpitEntity extends ProjectileEntity {
 		} else {
 			setMotion(motion.scale(0.99));
 			if (!hasNoGravity()) {
-				setMotion(getMotion().add(0, -0.06, 0));
+				setMotion(getMotion().add(0, -0.03, 0));
 			}
 			
 			setPosition(getPosX() + motion.x, getPosY() + motion.y, getPosZ() + motion.z);

@@ -60,8 +60,8 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
 		goalSelector.addGoal(1, new SwimGoal(this));
 		goalSelector.addGoal(2, new SitGoal(this));
 		goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
-		goalSelector.addGoal(4, new LumpiRangedAttackGoal(this, 1.25, 40, 20));
-		goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.5, true));
+		goalSelector.addGoal(4, new LumpiRangedAttackGoal(this, 0.75, 40, 20));
+		goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true));
 		goalSelector.addGoal(5, new FollowOwnerGoal(this, 1, 10, 2, false));
 		goalSelector.addGoal(6, new BreedGoal(this, 1));
 		goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1));
@@ -85,8 +85,8 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
 		final double y = target.getPosYHeight(0.3333333333333333) - spit.getPosY();
 		final double z = target.getPosZ() - getPosZ();
 		
-		final float addedY = MathHelper.sqrt(x * x + z * z) * 0.2F;
-		spit.shoot(x, y + addedY, z, 1, 10);
+		final float addedY = MathHelper.sqrt(x * x + z * z) * 0.2F + 0.5F;
+		spit.shoot(x, y + addedY, z, 1, 5);
 		
 		if (!isSilent()) {
 			world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_LLAMA_SPIT, getSoundCategory(), 1, 1 + (rand.nextFloat() - rand.nextFloat()) * 0.2F);
