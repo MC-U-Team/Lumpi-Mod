@@ -12,8 +12,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class LumpiEntity extends WolfEntity {
 	
-	public LumpiEntity(EntityType<? extends LumpiEntity> type, World worldIn) {
-		super(type, worldIn);
+	public LumpiEntity(EntityType<? extends LumpiEntity> type, World world) {
+		super(type, world);
 		setCustomName(new StringTextComponent("Lumpi"));
 		setCustomNameVisible(true);
 	}

@@ -12,36 +12,44 @@ import net.minecraft.util.ResourceLocation;
 
 public class LumpiRenderer extends MobRenderer<LumpiEntity, LumpiModel> {
 	
-	private static final ResourceLocation WOLF_TEXTURES = new ResourceLocation(LumpiMod.MODID, "textures/entity/hotdog.png");
-	private static final ResourceLocation TAMED_WOLF_TEXTURES = new ResourceLocation(LumpiMod.MODID, "textures/entity/hotdog_tame.png");
-	private static final ResourceLocation ANGRY_WOLF_TEXTURES = new ResourceLocation(LumpiMod.MODID, "textures/entity/hotdog_angry.png");
+	private static final ResourceLocation LUMPI_TEXTURES = new ResourceLocation(LumpiMod.MODID, "textures/entity/hotdog.png");
+	private static final ResourceLocation TAMED_LUMPI_TEXTURES = new ResourceLocation(LumpiMod.MODID, "textures/entity/hotdog_tame.png");
+	private static final ResourceLocation ANGRY_LUMPI_TEXTURES = new ResourceLocation(LumpiMod.MODID, "textures/entity/hotdog_angry.png");
 	
-	public LumpiRenderer(EntityRendererManager renderManagerIn) {
-		super(renderManagerIn, new LumpiModel(), 0.5F);
+	public LumpiRenderer(EntityRendererManager renderManager) {
+		super(renderManager, new LumpiModel(), 0.5F);
 	}
 	
-	protected float handleRotationFloat(LumpiEntity livingBase, float partialTicks) {
-		return livingBase.getTailRotation();
+	@Override
+	protected float handleRotationFloat(LumpiEntity entity, float partialTicks) {
+		return entity.getTailRotation();
 	}
 	
-	public void render(LumpiEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		if (entityIn.isWolfWet()) {
-			float f = entityIn.getShadingWhileWet(partialTicks);
-			this.entityModel.setTint(f, f, f);
+	@Override
+	public void render(LumpiEntity entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int packedLight) {
+		entityModel = new LumpiModel();
+		
+		
+		if (entity.isWolfWet()) {
+			final float shading = entity.getShadingWhileWet(partialTicks);
+			entityModel.setTint(shading, shading, shading);
 		}
 		
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-		if (entityIn.isWolfWet()) {
-			this.entityModel.setTint(1.0F, 1.0F, 1.0F);
-		}
+		super.render(entity, entityYaw, partialTicks, matrixStackIn, buffer, packedLight);
 		
+		if (entity.isWolfWet()) {
+			entityModel.setTint(1, 1, 1);
+		}
 	}
 	
+	@Override
 	public ResourceLocation getEntityTexture(LumpiEntity entity) {
 		if (entity.isTamed()) {
-			return TAMED_WOLF_TEXTURES;
+			return TAMED_LUMPI_TEXTURES;
+		} else if (entity.isAngry()) {
+			return ANGRY_LUMPI_TEXTURES;
 		} else {
-			return entity.isAngry() ? ANGRY_WOLF_TEXTURES : WOLF_TEXTURES;
+			return LUMPI_TEXTURES;
 		}
 	}
 }
