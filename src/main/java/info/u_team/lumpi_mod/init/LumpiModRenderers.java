@@ -8,7 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class LumpiModRenderers {
 	
 	private static void setup(FMLClientSetupEvent event) {
-		ClientRegistry.registerEntityRenderer(LumpiModEntities.LUMPI, LumpiRenderer::new);
+		ClientRegistry.registerEntityRenderer(LumpiModEntityTypes.LUMPI, LumpiRenderer::new);
 	}
 	
 	public static void registerMod(IEventBus bus) {

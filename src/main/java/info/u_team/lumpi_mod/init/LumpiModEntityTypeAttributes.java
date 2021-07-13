@@ -7,7 +7,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public class LumpiModEntityTypeAttributes {
 	
 	private static void entityAttributionCreation(EntityAttributeCreationEvent event) {
-		event.put(LumpiModEntities.LUMPI.get(), LumpiEntity.registerAttributes().create());
+		event.put(LumpiModEntityTypes.LUMPI.get(), LumpiEntity.registerAttributes().create());
 	}
 	
 	public static void registerMod(IEventBus bus) {

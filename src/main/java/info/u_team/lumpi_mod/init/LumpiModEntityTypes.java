@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 
-public class LumpiModEntities {
+public class LumpiModEntityTypes {
 	
 	public static final EntityTypeDeferredRegister ENTITY_TYPES = EntityTypeDeferredRegister.create(LumpiMod.MODID);
 	

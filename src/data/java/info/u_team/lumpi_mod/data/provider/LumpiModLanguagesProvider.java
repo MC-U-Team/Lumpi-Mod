@@ -1,6 +1,6 @@
 package info.u_team.lumpi_mod.data.provider;
 
-import info.u_team.lumpi_mod.init.LumpiModEntities;
+import info.u_team.lumpi_mod.init.LumpiModEntityTypes;
 import info.u_team.lumpi_mod.init.LumpiModItems;
 import info.u_team.lumpi_mod.init.LumpiModItemsGroups;
 import info.u_team.u_team_core.data.CommonLanguagesProvider;
@@ -19,7 +19,7 @@ public class LumpiModLanguagesProvider extends CommonLanguagesProvider {
 		
 		addItem(LumpiModItems.LUMPI_SPAWN_EGG, "Lumpi Spawn Egg");
 		
-		addEntityType(LumpiModEntities.LUMPI, "Lumpi");
+		addEntityType(LumpiModEntityTypes.LUMPI, "Lumpi");
 	}
 	
 }

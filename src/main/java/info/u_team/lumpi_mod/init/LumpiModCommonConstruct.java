@@ -10,7 +10,7 @@ public class LumpiModCommonConstruct implements IModConstruct {
 	
 	@Override
 	public void construct() {
-		BusRegister.registerMod(LumpiModEntities::registerMod);
+		BusRegister.registerMod(LumpiModEntityTypes::registerMod);
 		BusRegister.registerMod(LumpiModEntityTypeAttributes::registerMod);
 		BusRegister.registerMod(LumpiModItems::registerMod);
 	}
