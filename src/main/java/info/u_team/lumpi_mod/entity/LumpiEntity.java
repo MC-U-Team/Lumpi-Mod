@@ -61,13 +61,13 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
 		goalSelector.addGoal(2, new SitGoal(this));
 		goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
 		goalSelector.addGoal(4, new LumpiRangedAttackGoal(this, 1.25, 40, 20));
-		goalSelector.addGoal(5, new MeleeAttackGoal(this, 0.5, true));
-		goalSelector.addGoal(6, new FollowOwnerGoal(this, 1, 10, 2, false));
-		goalSelector.addGoal(7, new BreedGoal(this, 1));
-		goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1));
-		goalSelector.addGoal(9, new BegGoal(this, 8));
-		goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8));
-		goalSelector.addGoal(10, new LookRandomlyGoal(this));
+		goalSelector.addGoal(4, new MeleeAttackGoal(this, 0.5, true));
+		goalSelector.addGoal(5, new FollowOwnerGoal(this, 1, 10, 2, false));
+		goalSelector.addGoal(6, new BreedGoal(this, 1));
+		goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1));
+		goalSelector.addGoal(8, new BegGoal(this, 8));
+		goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8));
+		goalSelector.addGoal(9, new LookRandomlyGoal(this));
 		
 		targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 		targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
