@@ -1,6 +1,7 @@
 package info.u_team.lumpi_mod.entity;
 
 import info.u_team.lumpi_mod.init.LumpiModEntityTypes;
+import info.u_team.lumpi_mod.init.LumpiModParticleTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -8,7 +9,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.network.IPacket;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -45,7 +45,7 @@ public class LumpiSpitEntity extends ProjectileEntity {
 		
 		for (int index = 0; index < 7; ++index) {
 			final double distance = 0.4 + 0.1 * index;
-			world.addParticle(ParticleTypes.SPIT, posX, posY, posZ, velX * distance, velY, velZ * distance);
+			world.addParticle(LumpiModParticleTypes.LUMPI_SPIT.get(), posX, posY, posZ, velX * distance, velY, velZ * distance);
 		}
 	}
 	

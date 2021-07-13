@@ -14,6 +14,7 @@ public class LumpiModCommonConstruct implements IModConstruct {
 		BusRegister.registerMod(LumpiModEntityTypes::registerMod);
 		BusRegister.registerMod(LumpiModEntityTypeAttributes::registerMod);
 		BusRegister.registerMod(LumpiModItems::registerMod);
+		BusRegister.registerMod(LumpiModParticleTypes::registerMod);
 		
 		BusRegister.registerForge(SpawnEventHandler::registerForge);
 	}

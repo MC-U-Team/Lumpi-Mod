@@ -10,6 +10,7 @@ public class LumpiModClientConstruct implements IModConstruct {
 	
 	@Override
 	public void construct() {
+		BusRegister.registerMod(LumpiModParticles::registerMod);
 		BusRegister.registerMod(LumpiModRenderers::registerMod);
 	}
 }
