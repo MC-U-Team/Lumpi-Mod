@@ -4,8 +4,11 @@ import java.util.UUID;
 
 import info.u_team.lumpi_mod.init.LumpiModEntityTypes;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.BoostHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.IRideable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -30,22 +33,32 @@ import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
+public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideable {
+	
+	private static final DataParameter<Integer> BOOST_TIME = EntityDataManager.createKey(LumpiEntity.class, DataSerializers.VARINT);
+	
+	private final BoostHelper boostHelper;
 	
 	private boolean stopSpitting;
 	
 	public LumpiEntity(EntityType<? extends LumpiEntity> type, World world) {
 		super(type, world);
-		setCustomName(new StringTextComponent("Lumpi"));
-		setCustomNameVisible(true);
+		boostHelper = new BoostHelper(dataManager, BOOST_TIME, null);
 	}
 	
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -56,11 +69,25 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
 	}
 	
 	@Override
+	public void notifyDataManagerChange(DataParameter<?> key) {
+		if (BOOST_TIME.equals(key) && world.isRemote) {
+			boostHelper.updateData();
+		}
+		super.notifyDataManagerChange(key);
+	}
+	
+	@Override
+	protected void registerData() {
+		super.registerData();
+		dataManager.register(BOOST_TIME, 0);
+	}
+	
+	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new SwimGoal(this));
 		goalSelector.addGoal(2, new SitGoal(this));
 		goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4F));
-		goalSelector.addGoal(4, new LumpiRangedAttackGoal(this, 0.75, 40, 20));
+		goalSelector.addGoal(4, new LumpiRangedAttackGoal(this, 0.75, 5, 30, 20));
 		goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true));
 		goalSelector.addGoal(5, new FollowOwnerGoal(this, 1, 10, 2, false));
 		goalSelector.addGoal(6, new BreedGoal(this, 1));
@@ -143,14 +170,106 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
 	}
 	
 	@Override
+	public boolean boost() {
+		return boostHelper.boost(getRNG());
+	}
+	
+	@Override
+	public void travelTowards(Vector3d travelVector) {
+		super.travel(travelVector);
+	}
+	
+	@Override
+	public void travel(Vector3d travelVector) {
+		ride(this, boostHelper, travelVector);
+	}
+	
+	@Override
+	public boolean ride(MobEntity mount, BoostHelper helper, Vector3d travelVector) {
+		if (!mount.isAlive()) {
+			return false;
+		} else {
+			final Entity entity = getControllingPassenger();
+			if (mount.isBeingRidden() && mount.canBeSteered() && entity instanceof PlayerEntity) {
+				mount.rotationYaw = entity.rotationYaw;
+				mount.prevRotationYaw = mount.rotationYaw;
+				mount.rotationPitch = entity.rotationPitch * 0.5F;
+				mount.setRotation(mount.rotationYaw, mount.rotationPitch);
+				mount.renderYawOffset = mount.rotationYaw;
+				mount.rotationYawHead = mount.rotationYaw;
+				mount.stepHeight = 1;
+				mount.jumpMovementFactor = mount.getAIMoveSpeed() * 0.1F;
+				if (helper.saddledRaw && helper.field_233611_b_++ > helper.boostTimeRaw) {
+					helper.saddledRaw = false;
+				}
+				
+				if (mount.canPassengerSteer()) {
+					float speed = this.getMountedSpeed();
+					if (helper.saddledRaw) {
+						speed += speed * 1.15F * MathHelper.sin((float) helper.field_233611_b_ / (float) helper.boostTimeRaw * (float) Math.PI);
+					}
+					
+					final PlayerEntity player = (PlayerEntity) entity;
+					speed *= player.moveForward;
+					
+					mount.setAIMoveSpeed(speed);
+					travelTowards(new Vector3d(0.0D, 0.0D, 1.0D));
+					mount.newPosRotationIncrements = 0;
+				} else {
+					mount.func_233629_a_(mount, false);
+					mount.setMotion(Vector3d.ZERO);
+				}
+				
+				return true;
+			} else {
+				mount.stepHeight = 0.5F;
+				mount.jumpMovementFactor = 0.02F;
+				travelTowards(travelVector);
+				return false;
+			}
+		}
+	}
+	
+	@Override
+	public float getMountedSpeed() {
+		return (float) (getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.55F);
+	}
+	
+	@Override
+	public boolean canBeSteered() {
+		final Entity controller = getControllingPassenger();
+		if (controller instanceof LivingEntity) {
+			return isTamed() && isOwner((LivingEntity) controller) && !isEntitySleeping();
+		}
+		return false;
+	}
+	
+	@Override
+	public Entity getControllingPassenger() {
+		return getPassengers().isEmpty() ? null : getPassengers().get(0);
+	}
+	
+	@Override
+	public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+		final ItemStack stack = player.getHeldItem(hand);
+		if (isTamed() && !isBreedingItem(stack) && !(stack.getItem() instanceof DyeItem) && !isBeingRidden() && !player.isSecondaryUseActive()) {
+			if (!world.isRemote()) {
+				player.startRiding(this);
+			}
+			return ActionResultType.func_233537_a_(world.isRemote());
+		}
+		return super.getEntityInteractionResult(player, hand);
+	}
+	
+	@Override
 	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 	
-	private class LumpiRangedAttackGoal extends RangedAttackGoal {
+	protected class LumpiRangedAttackGoal extends RangedAttackGoal {
 		
-		public LumpiRangedAttackGoal(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistanceIn) {
-			super(attacker, movespeed, maxAttackTime, maxAttackDistanceIn);
+		protected LumpiRangedAttackGoal(IRangedAttackMob attacker, double movespeed, int minAttackTime, int maxAttackTime, float maxAttackDistanceIn) {
+			super(attacker, movespeed, minAttackTime, maxAttackTime, maxAttackDistanceIn);
 		}
 		
 		@Override
@@ -170,4 +289,5 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob {
 			return super.shouldContinueExecuting();
 		}
 	}
+	
 }
