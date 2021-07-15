@@ -189,11 +189,11 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideab
 		if (!mount.isAlive()) {
 			return false;
 		} else {
-			final Entity entity = getControllingPassenger();
-			if (mount.isBeingRidden() && mount.canBeSteered() && entity instanceof PlayerEntity) {
-				mount.rotationYaw = entity.rotationYaw;
+			final Entity rider = getControllingPassenger();
+			if (mount.isBeingRidden() && mount.canBeSteered() && rider instanceof PlayerEntity) {
+				mount.rotationYaw = rider.rotationYaw;
 				mount.prevRotationYaw = mount.rotationYaw;
-				mount.rotationPitch = entity.rotationPitch * 0.5F;
+				mount.rotationPitch = rider.rotationPitch * 0.5F;
 				mount.setRotation(mount.rotationYaw, mount.rotationPitch);
 				mount.renderYawOffset = mount.rotationYaw;
 				mount.rotationYawHead = mount.rotationYaw;
@@ -204,12 +204,12 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideab
 				}
 				
 				if (mount.canPassengerSteer()) {
-					float speed = this.getMountedSpeed();
+					float speed = getMountedSpeed();
 					if (helper.saddledRaw) {
 						speed += speed * 1.15F * MathHelper.sin((float) helper.field_233611_b_ / (float) helper.boostTimeRaw * (float) Math.PI);
 					}
 					
-					final PlayerEntity player = (PlayerEntity) entity;
+					final PlayerEntity player = (PlayerEntity) rider;
 					speed *= player.moveForward;
 					
 					mount.setAIMoveSpeed(speed);
