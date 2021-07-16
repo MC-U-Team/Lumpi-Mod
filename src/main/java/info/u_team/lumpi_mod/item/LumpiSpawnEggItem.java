@@ -9,8 +9,8 @@ import net.minecraft.item.Rarity;
 
 public class LumpiSpawnEggItem extends USpawnEggItem {
 	
-	public LumpiSpawnEggItem(Supplier<? extends EntityType<?>> type, int primaryColor, int secondaryColor) {
-		super(LumpiModItemsGroups.GROUP, new Properties().rarity(Rarity.UNCOMMON), type, primaryColor, secondaryColor);
+	public LumpiSpawnEggItem(Supplier<? extends EntityType<?>> type, Rarity rarity, int primaryColor, int secondaryColor) {
+		super(LumpiModItemsGroups.GROUP, new Properties().rarity(rarity), type, primaryColor, secondaryColor);
 	}
 	
 }
