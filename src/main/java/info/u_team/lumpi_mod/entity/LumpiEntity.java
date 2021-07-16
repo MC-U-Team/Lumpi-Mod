@@ -11,6 +11,7 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.IRideable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.BegGoal;
@@ -50,6 +51,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideable {
 	
+	private static final AttributeModifier HEALTH_BOOST_MODIFIER = new AttributeModifier(UUID.fromString("f111911e-aa68-41cc-a030-0b8ff7b3f6ff"), "Tamed health boost", 13, AttributeModifier.Operation.ADDITION);
+	
 	private static final DataParameter<Integer> BOOST_TIME = EntityDataManager.createKey(LumpiEntity.class, DataSerializers.VARINT);
 	
 	private final BoostHelper boostHelper;
@@ -61,11 +64,11 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideab
 		boostHelper = new BoostHelper(dataManager, BOOST_TIME, null);
 	}
 	
-	public static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes(double movementSpeed, double maxHealth, double attackDamage) {
 		return MobEntity.func_233666_p_() //
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.4) //
-				.createMutableAttribute(Attributes.MAX_HEALTH, 12) //
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6);
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, movementSpeed) //
+				.createMutableAttribute(Attributes.MAX_HEALTH, maxHealth) //
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, attackDamage);
 	}
 	
 	@Override
@@ -105,6 +108,18 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideab
 	}
 	
 	@Override
+	public void setTamed(boolean tamed) {
+		super.setTamed(tamed);
+		
+		if (tamed) {
+			getAttribute(Attributes.MAX_HEALTH).applyNonPersistentModifier(HEALTH_BOOST_MODIFIER);
+			setHealth((float) getAttribute(Attributes.MAX_HEALTH).getValue());
+		} else {
+			getAttribute(Attributes.MAX_HEALTH).removeModifier(HEALTH_BOOST_MODIFIER);
+		}
+	}
+	
+	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		final LumpiSpitEntity spit = new LumpiSpitEntity(world, this);
 		
@@ -122,20 +137,6 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideab
 		
 		// Randomly stop spitting after some spits
 		stopSpitting = rand.nextInt(2) == 0;
-	}
-	
-	@Override
-	public void setTamed(boolean tamed) {
-		super.setTamed(tamed);
-		
-		if (tamed) {
-			getAttribute(Attributes.MAX_HEALTH).setBaseValue(25);
-			setHealth(25);
-		} else {
-			getAttribute(Attributes.MAX_HEALTH).setBaseValue(12);
-		}
-		
-		getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(6);
 	}
 	
 	@Override

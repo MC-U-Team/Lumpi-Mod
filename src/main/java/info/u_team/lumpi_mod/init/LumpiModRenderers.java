@@ -1,5 +1,6 @@
 package info.u_team.lumpi_mod.init;
 
+import info.u_team.lumpi_mod.entity.render.LoadedLumpiRenderer;
 import info.u_team.lumpi_mod.entity.render.LumpiRenderer;
 import info.u_team.lumpi_mod.entity.render.LumpiSpitRenderer;
 import info.u_team.u_team_core.util.registry.ClientRegistry;
@@ -10,6 +11,8 @@ public class LumpiModRenderers {
 	
 	private static void setup(FMLClientSetupEvent event) {
 		ClientRegistry.registerEntityRenderer(LumpiModEntityTypes.LUMPI, LumpiRenderer::new);
+		ClientRegistry.registerEntityRenderer(LumpiModEntityTypes.LOADED_LUMPI, LoadedLumpiRenderer::new);
+		
 		ClientRegistry.registerEntityRenderer(LumpiModEntityTypes.LUMPI_SPIT, LumpiSpitRenderer::new);
 	}
 	
