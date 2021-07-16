@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:entity",
+	"pools": [
+		{
+			"rolls": {
+				"min": 1.0,
+				"max": 3.0,
+				"type": "minecraft:uniform"
+			},
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"name": "lumpimod:hotdog"
+				}
+			]
+		}
+	]
+}
