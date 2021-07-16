@@ -109,7 +109,14 @@ public class LumpiEntity extends WolfEntity implements IRangedAttackMob, IRideab
 	
 	@Override
 	public void setTamed(boolean tamed) {
-		super.setTamed(tamed);
+		final byte tamedValue = dataManager.get(TAMED);
+		if (tamed) {
+			dataManager.set(TAMED, (byte) (tamedValue | 4));
+		} else {
+			dataManager.set(TAMED, (byte) (tamedValue & -5));
+		}
+		
+		setupTamedAI();
 		
 		if (tamed) {
 			getAttribute(Attributes.MAX_HEALTH).applyNonPersistentModifier(HEALTH_BOOST_MODIFIER);
