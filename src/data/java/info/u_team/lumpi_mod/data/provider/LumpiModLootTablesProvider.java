@@ -51,6 +51,6 @@ public class LumpiModLootTablesProvider extends CommonLootTablesProvider {
 	
 	private static void registerEntity(EntityType<?> entity, LootTable lootTable, BiConsumer<ResourceLocation, LootTable> consumer) {
 		final ResourceLocation registryName = entity.getRegistryName();
-		consumer.accept(new ResourceLocation(registryName.getNamespace(), "entites/" + registryName.getPath()), lootTable);
+		consumer.accept(new ResourceLocation(registryName.getNamespace(), "entities/" + registryName.getPath()), lootTable);
 	}
 }
