@@ -13,6 +13,7 @@ public class LumpiModItemModelsProvider extends CommonItemModelsProvider {
 	@Override
 	protected void registerModels() {
 		spawnEgg(LumpiModItems.LUMPI_SPAWN_EGG.get());
+		spawnEgg(LumpiModItems.LOADED_LUMPI_SPAWN_EGG.get());
 	}
 	
 }
