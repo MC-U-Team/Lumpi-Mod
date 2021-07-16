@@ -19,9 +19,11 @@ public class LumpiModLanguagesProvider extends CommonLanguagesProvider {
 		
 		addItem(LumpiModItems.LUMPI_SPAWN_EGG, "Lumpi Spawn Egg");
 		addItem(LumpiModItems.LOADED_LUMPI_SPAWN_EGG, "Loaded Lumpi Spawn Egg");
+		addItem(LumpiModItems.STEEL_LUMPI_SPAWN_EGG, "Steel Lumpi Spawn Egg");
 		
 		addEntityType(LumpiModEntityTypes.LUMPI, "Lumpi");
 		addEntityType(LumpiModEntityTypes.LOADED_LUMPI, "Loaded Lumpi");
+		addEntityType(LumpiModEntityTypes.STEEL_LUMPI, "Steel Lumpi");
 		
 		addEntityType(LumpiModEntityTypes.LUMPI_SPIT, "Lumpi Spit");
 	}

@@ -14,6 +14,7 @@ public class LumpiModItemModelsProvider extends CommonItemModelsProvider {
 	protected void registerModels() {
 		spawnEgg(LumpiModItems.LUMPI_SPAWN_EGG.get());
 		spawnEgg(LumpiModItems.LOADED_LUMPI_SPAWN_EGG.get());
+		spawnEgg(LumpiModItems.STEEL_LUMPI_SPAWN_EGG.get());
 	}
 	
 }
