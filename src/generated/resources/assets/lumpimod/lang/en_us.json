@@ -1,5 +1,8 @@
 {
+	"entity.lumpimod.loaded_lumpi": "Loaded Lumpi",
 	"entity.lumpimod.lumpi": "Lumpi",
+	"entity.lumpimod.lumpi_spit": "Lumpi Spit",
+	"item.lumpimod.loaded_lumpi_spawn_egg": "Loaded Lumpi Spawn Egg",
 	"item.lumpimod.lumpi_spawn_egg": "Lumpi Spawn Egg",
 	"itemGroup.lumpimod.group": "Lumpi Mod"
 }
