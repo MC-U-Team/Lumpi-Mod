@@ -5,4 +5,4 @@ All notable changes to this project will be documented in this file.
 ### Added
  - First public release
  - Add lumpi entity with spawn eggs and the functions
- - Updated version of this mod (Lekoopas Hotdog Mod Lumpi)[https://www.curseforge.com/minecraft/mc-mods/lekoopas-hotdog-mod-lumpi] with permission of LeKoopa
+ - Updated version of this mod [Lekoopas Hotdog Mod Lumpi](https://www.curseforge.com/minecraft/mc-mods/lekoopas-hotdog-mod-lumpi) with permission of LeKoopa
