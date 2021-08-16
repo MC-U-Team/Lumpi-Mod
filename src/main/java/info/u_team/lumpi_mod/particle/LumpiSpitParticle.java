@@ -6,8 +6,6 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.PoofParticle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class LumpiSpitParticle extends PoofParticle {
 	
@@ -25,7 +23,6 @@ public class LumpiSpitParticle extends PoofParticle {
 		motionY -= 0.004D + 0.04D * particleGravity;
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	public static class Factory implements IParticleFactory<BasicParticleType> {
 		
 		private final IAnimatedSprite spriteSet;
