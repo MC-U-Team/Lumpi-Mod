@@ -12,7 +12,7 @@ authors="HyCraftHD, LeKoopa"
 	version="${file.jarVersion}"
 	displayName="Lumpi Mod"
 	updateJSONURL="https://api.u-team.info/update/lumpimod.json"
-	description="This mod adds the 'Lumpi' entity to the game. Updated version of https://www.curseforge.com/minecraft/mc-mods/lekoopas-hotdog-mod-lumpi with permission of LeKoopa. Original authors are Eman_not_ava, Purplicious_Cow"
+	description="This mod adds the 'Lumpi' entity to the game.\n\nUpdated version of https://www.curseforge.com/minecraft/mc-mods/lekoopas-hotdog-mod-lumpi with permission of LeKoopa.\nOriginal authors are Eman_not_ava, Purplicious_Cow"
 	
 	[[dependencies.lumpimod]]
 	    modId="forge"
