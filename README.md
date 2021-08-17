@@ -47,7 +47,7 @@ dependencies {
 
 ### License
 
-- This mod is licensed under apache 2 license. For more information see [here](LICENSE).  
+- This mod is all rights reserved. For more information see [here](LICENSE).  
 - This mod can be packed in any curseforge modpack you like.
 
 ### Issues
